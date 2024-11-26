@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iliililil Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .game-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-gap: 5px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .score, .timer {
+            font-size: 24px;
+            margin: 10px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #3498db;
+            color: white;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .game-over-container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+
+        .game-over-container h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .game-over-container p {
+            font-size: 24px;
+        }
+
+        .game-over-container button {
+            background-color: #e74c3c;
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .game-over-container button:hover {
+            background-color: #c0392b;
+        }
+
+        .start-screen {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .start-screen h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="start-screen" id="startScreen">
+    <h1>iliililil</h1>
+    <p>Find all the hidden letters before time runs out!</p>
+    <button class="button" onclick="startGame()">Start Game</button>
+</div>
+
+<div class="game-container" id="gameContainer" style="display: none;">
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time Remaining: <span id="timer">20</span> seconds</div>
+    <div class="grid" id="grid"></div>
+    <button class="button" onclick="startGame()">Restart Game</button>
+</div>
+
+<div class="game-over-container" id="gameOverScreen">
+    <h1>Game Over!</h1>
+    <p>Your final score is: <span id="finalScore"></span></p>
+    <button onclick="restartGame()">Play Again</button>
+</div>
+
+<script>
+    let score = 0;
+    let currentLetterPair = ['i', 'l'];
+    let grid = [];
+    let timeLeft = 20;
+    let timerInterval;
+    const gridSize = 10;
+
+    const letterPairs = [
+        ['i', 'l'],
+        ['P', 'F'],
+        ['M', 'N'],
+        ['V', 'W'],
+    ];
+
+    function generateGrid(letterPair) {
+        const gridContainer = document.getElementById('grid');
+        gridContainer.innerHTML = '';
+        grid = [];
+
+        for (let i = 0; i < gridSize * gridSize; i++) {
+            const letter = Math.random() < 0.05 ? letterPair[1] : letterPair[0];
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.textContent = letter;
+            cell.onclick = () => checkCell(cell, letter);
+            grid.push(cell);
+            gridContainer.appendChild(cell);
+        }
+    }
+
+    function checkCell(cell, letter) {
+        if (letter === currentLetterPair[1]) {
+            cell.style.backgroundColor = 'green';
+            score += 1;
+            document.getElementById('score').textContent = score;
+            checkAllFound();
+        } else {
+            cell.style.backgroundColor = 'red';
+        }
+    }
+
+    function checkAllFound() {
+        const allFound = grid.every(cell => cell.style.backgroundColor === 'green' || cell.textContent === currentLetterPair[0]);
+        if (allFound) {
+            changeLetterPair();
+            generateGrid(currentLetterPair);
+        }
+    }
+
+    let index = 0;
+    function changeLetterPair() {
+        index++;
+        if(letterPairs.length === index) {
+            index = 0;
+        }
+        currentLetterPair = letterPairs[index];
+    }
+
+    function startGame() {
+        score = 0;
+        timeLeft = 20;
+        document.getElementById('score').textContent = score;
+        document.getElementById('timer').textContent = timeLeft;
+
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameContainer').style.display = 'block';
+
+        generateGrid(currentLetterPair);
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            gameOver();
+        }
+    }
+
+    function gameOver() {
+        document.getElementById('finalScore').textContent = score;
+        document.getElementById('gameOverScreen').style.display = 'block';
+        document.getElementById('gameContainer').style.display = 'none';
+    }
+
+    function restartGame() {
+        document.getElementById('gameOverScreen').style.display = 'none';
+        startGame();
+    }
+</script>
+
+</body>
+</html>
