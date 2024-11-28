@@ -24,7 +24,7 @@
             margin-top: 20px;
         }
 
-        .grid {
+        #grid {
             display: grid;
             grid-template-columns: repeat(10, 40px);
             grid-gap: 5px;
@@ -49,6 +49,7 @@
 
         .cell:hover {
             background-color: #f7e8e8;
+            cursor: pointer;
         }
 
         .cell.correct {
@@ -319,6 +320,44 @@
         .hint-ui,
         .letter-highlight {
             transform: scale(1);
+        }
+
+        @media (max-width: 600px) {
+            #grid {
+                grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); /* 셀 크기 동적 조정 */
+                grid-gap: 5px;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .cell {
+                font-size: calc(10px + 1vw); /* 동적 폰트 크기 */
+                aspect-ratio: 1; /* 항상 정사각형 유지 */
+                width: auto; /* 고정 크기 제거 */
+                height: auto; /* 고정 크기 제거 */
+                border-radius: 4px;
+            }
+
+            .timer-ui, .hint-ui, .score-ui {
+                font-size: 14px; /* UI 크기 조정 */
+                padding: 5px 10px; /* 패딩 축소 */
+            }
+            .timer-icon, .timer-value, .score-value, .letter-highlight {
+                font-size: 18px; /* 숫자 크기 조정 */
+            }
+
+            .start-screen h1 {
+                font-size: 24px; /* 타이틀 크기 축소 */
+            }
+
+            .start-screen p {
+                font-size: 16px;
+            }
+
+            .button {
+                font-size: 14px; /* 버튼 텍스트 크기 축소 */
+                padding: 10px 20px;
+            }
         }
     </style>
 </head>
