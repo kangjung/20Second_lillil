@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <title>lllilll-Game:Find the wrong alphabet</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            letter-spacing: -0.025em;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&display=swap');
+
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Martel Sans", sans-serif;
             margin: 0;
             padding: 0;
             background-color: #fef6e4;
@@ -22,6 +32,7 @@
         .game-container {
             text-align: center;
             margin-top: 20px;
+            width: 100%;
         }
 
         #grid {
@@ -29,6 +40,7 @@
             grid-template-columns: repeat(10, 40px);
             grid-gap: 5px;
             margin: 20px auto;
+            justify-content: center;
         }
 
         .cell {
@@ -66,12 +78,13 @@
             padding: 40px 60px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
+            width: 95%;
+            max-width: 700px;
+            height: 600px;
         }
 
         .start-screen h1 {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Martel Sans", sans-serif;
             font-size: 36px;
             color: #ff69b4;
             margin-bottom: 20px;
@@ -80,11 +93,12 @@
         }
 
         .start-screen p {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Martel Sans", sans-serif;
             font-size: 18px;
             color: #666;
-            line-height: 1.7;
+            line-height: 1.45;
             margin-bottom: 30px;
+            margin-top: 16px;
             letter-spacing: 0.5px;
             text-align: center;
             animation: fadeIn 1s ease-out;
@@ -109,11 +123,10 @@
 
 
         .button:hover {
-            background-color: #ff6fa3; /* 약간 더 어두운 핑크 */
+            background-color: #ff6fa3;
             transform: scale(1.05);
         }
 
-        /* 버튼 클릭 효과 */
         .button:active {
             transform: scale(1);
         }
@@ -157,21 +170,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60%;
+            width: 90%;
+            max-width: 420px;
         }
 
         .game-over-container h1 {
             font-size: 40px;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
 
         .game-over-container p {
             font-size: 24px;
+            margin-bottom: 14px;
         }
 
         .game-over-container button {
             background-color: #e74c3c;
-            padding: 15px 30px;
+            padding: 14px 24px;
             font-size: 20px;
             border: none;
             border-radius: 5px;
@@ -193,13 +208,16 @@
 
         .start-screen h1 {
             font-size: 50px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            font-family: "Martel Sans", sans-serif;
+            font-weight: 700;
         }
 
         .start-screen p {
             font-size: 24px;
             margin-bottom: 30px;
         }
+
         .info-bar {
             display: flex;
             justify-content: space-between;
@@ -209,8 +227,10 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 90%;
+            width: 100%;
+            max-width: 452px;
             font-size: 20px;
+            gap: 8px;
         }
 
         .timer-ui {
@@ -224,8 +244,24 @@
             font-size: 24px;
             color: #2c3e50;
             font-weight: bold;
-            min-width: 65px;
             transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+        }
+
+        .info-bar .ui-box {
+            width: 33.3333%;
+            justify-content: center;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .info-bar .ui-box span {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .info-bar .ui-box span.timer-icon {
+            font-size: 24px;
         }
 
         .timer-icon {
@@ -233,7 +269,8 @@
             margin-right: 8px;
             color: #e74c3c;
         }
-        .timer-value{
+
+        .timer-value {
             font-size: 28px;
             font-weight: bold;
             color: #e74c3c;
@@ -251,8 +288,8 @@
             font-size: 24px;
             color: #27ae60;
             font-weight: bold;
-            min-width: 114px;
             transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            justify-content: center;
         }
 
         .score-label {
@@ -272,7 +309,7 @@
         }
 
         .score-value.animate {
-            transform: scale(1.5);
+            transform: scale(1.1);
             color: #ffffff;
         }
 
@@ -281,12 +318,13 @@
             transform: scale(1);
         }
 
-
         .hint-ui {
             display: flex;
             align-items: center;
+            justify-content: center;
             background-color: #f4f4f9;
             border: 2px solid #3498db;
+            width: 33.33%;
             padding: 10px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -323,65 +361,120 @@
         }
 
         @media (max-width: 600px) {
+            .game-container {
+                padding: 0 10px;
+            }
+
+            .start-screen {
+                padding: 24px 14px;
+                height: auto;
+            }
+
             #grid {
-                grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); /* 셀 크기 동적 조정 */
+                grid-template-columns: repeat(10, 1fr);
                 grid-gap: 5px;
                 width: 100%;
                 margin: 0 auto;
             }
 
             .cell {
-                font-size: calc(10px + 1vw); /* 동적 폰트 크기 */
-                aspect-ratio: 1; /* 항상 정사각형 유지 */
-                width: auto; /* 고정 크기 제거 */
-                height: auto; /* 고정 크기 제거 */
+                font-size: calc(10px + 1vw);
+                aspect-ratio: 1;
+                width: auto;
+                height: auto;
                 border-radius: 4px;
             }
 
-            .timer-ui, .hint-ui, .score-ui {
-                font-size: 14px; /* UI 크기 조정 */
-                padding: 5px 10px; /* 패딩 축소 */
+            .info-bar {
+                padding: 12px;
+                max-width: 100%;
             }
-            .timer-icon, .timer-value, .score-value, .letter-highlight {
-                font-size: 18px; /* 숫자 크기 조정 */
+
+            .info-bar .ui-box {
+                font-size: 22px;
+            }
+
+            .timer-ui,
+            .hint-ui,
+            .score-ui {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            .timer-icon,
+            .timer-value,
+            .score-value,
+            .letter-highlight,
+            .info-bar .ui-box span.timer-icon,
+            .info-bar .ui-box span {
+                font-size: 20px;
             }
 
             .start-screen h1 {
-                font-size: 24px; /* 타이틀 크기 축소 */
+                font-size: 24px;
+            }
+
+            .start-screen h2 {
+                font-size: 18px;
+
             }
 
             .start-screen p {
                 font-size: 16px;
+                margin-top: 8px;
+                margin-bottom: 0;
+            }
+
+            .start-screen p br {
+                display: none;
             }
 
             .button {
-                font-size: 14px; /* 버튼 텍스트 크기 축소 */
+                font-size: 14px;
                 padding: 10px 20px;
+                margin-top: 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .info-bar {
+                padding: 8px;
+            }
+
+            .timer-icon,
+            .timer-value,
+            .score-value,
+            .letter-highlight,
+            .info-bar .ui-box span.timer-icon,
+            .info-bar .ui-box span {
+                font-size: 18px;
             }
         }
     </style>
 </head>
+
 <body>
 
 <div class="start-screen" id="startScreen">
     <h1>lllilll Game</h1>
     <h2>Find the wrong alphabet</h2>
-    <p>Find another alphabet among the same alphabet.<br> For example, l between i and F between E!<br> The time is 20 seconds! Look for as many as you can.</p>
+    <p>Find another alphabet among the same alphabet.<br> For example, l between i and F between E!<br>
+        The time is 20 seconds! Look for as many as you can.</p>
     <button class="button" onclick="startGame()">Start Game</button>
 </div>
 
 <div class="game-container" id="gameContainer" style="display: none;">
     <div class="info-bar">
-        <div class="timer-ui">
+        <div class="ui-box timer-ui">
             <span class="timer-icon">⏱</span>
             <span id="timer" class="timer-value">20</span>
         </div>
-        <div class="hint-ui">
-            <span class="hint-label">Find:</span>
+        <div class="ui-box hint-ui">
+            <span class="hint-label">Find : </span>
             <span id="currentPair" class="letter-highlight">i</span>
         </div>
-        <div class="score-ui">
-            <span class="score-label">Score:</span>
+        <div class="ui-box score-ui">
+            <span class="score-label">Score : </span>
             <span id="score" class="score-value">0</span>
         </div>
     </div>
