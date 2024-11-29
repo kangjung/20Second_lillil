@@ -460,6 +460,7 @@
     <h2>Find the wrong alphabet</h2>
     <p>Find another alphabet among the same alphabet.<br> For example, l between i and F between E!<br>
         The time is 20 seconds! Look for as many as you can.</p>
+    <p>Your High Score: <span id="highScoreDisplay">0</span></p>
     <button class="button" onclick="startGame()">Start Game</button>
 </div>
 
@@ -628,15 +629,25 @@
     }
 
     function gameOver() {
+        const highScore = localStorage.getItem('lllilllScore') || 0;
+        if (score > highScore) {
+            localStorage.setItem('lllilllScore', score);
+        }
         document.getElementById('finalScore').textContent = score;
         document.getElementById('gameOverScreen').style.display = 'block';
         document.getElementById('gameContainer').style.display = 'none';
     }
 
     function restartGame() {
+        displayHighScore();
         document.getElementById('gameOverScreen').style.display = 'none';
         document.getElementById('startScreen').style.display = 'block';
     }
+    function displayHighScore() {
+        const highScore = localStorage.getItem('lllilllScore') || 0;
+        document.getElementById('highScoreDisplay').textContent = highScore;
+    }
+    document.addEventListener('DOMContentLoaded', displayHighScore);
 </script>
 
 </body>
